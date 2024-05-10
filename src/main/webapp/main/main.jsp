@@ -26,7 +26,7 @@
 <div class="container" style="margin-top:30px">
   <div class="row">
     <div class="col-sm-4">
-      <h5 class="mb-4">로그인 중인 회원 : ${sName}</h5>
+      <h6 class="mb-4">로그인 중인 회원 : ${sNickName}</h6>
       <h6 class="text-right">최근 가입한 회원</h6>
       <div class="fakeimg">
       	<table class="table table-striped table-hover text-center">
@@ -66,7 +66,7 @@
     <div class="col-sm-8">
       <h2>TITLE HEADING</h2>
       <h5>Title description, Dec 7, 2017</h5>
-      <div class="fakeimg">Fake Image</div>
+      <%-- <div class="fakeimg"><img src="${ctp}/images/${mainImage}.jpg" width="100%" height="100%"/></div> --%>
       <p>Some text..</p>
       <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
       <br>

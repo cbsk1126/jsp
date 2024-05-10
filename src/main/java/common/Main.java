@@ -18,6 +18,10 @@ import study.database.LoginVO;
 public class Main extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+  	// 초기화면에 상품이미지(title image)를 랜덤하게 올려주기
+		int mainImage = (int) (Math.random()*(115+1-5)) + 111;
+		request.setAttribute("mainImage", mainImage);
+		
 		LoginDAO dao = new LoginDAO();
 		
 		ArrayList<LoginVO> recentVos = dao.getRecentFiveMember();
