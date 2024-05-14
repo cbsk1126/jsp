@@ -83,6 +83,11 @@
     		alert("닉네임을 입력하세요!");
     		myform.nickName.focus();
     	}
+    	else if(nickName == '${sNickName}') {
+    		alert("현재 닉네임을 그대로 사용합니다.");
+    		nickCheckSw = 1;
+    		return false;
+    	}
     	else {
     		nickCheckSw = 1;
     		
