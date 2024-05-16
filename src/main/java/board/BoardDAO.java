@@ -58,6 +58,7 @@ public class BoardDAO {
 				vo.setOpenSw(rs.getString("openSw"));
 				vo.setwDate(rs.getString("wDate"));
 				vo.setGood(rs.getInt("good"));
+				vo.setComplaint(rs.getString("complaint"));
 				
 				vo.setHour_diff(rs.getInt("hour_diff"));
 				vo.setDate_diff(rs.getInt("date_diff"));
