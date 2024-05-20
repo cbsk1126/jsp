@@ -1,18 +1,16 @@
 package board;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import common.Pagination;
-
 public class BoardListCommand3 implements BoardInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		/*
 		BoardDAO dao = new BoardDAO();
 		
 		// 페이징 처리 시작
@@ -26,6 +24,7 @@ public class BoardListCommand3 implements BoardInterface {
 		request.setAttribute("vos", vos);
 		
 		//Pagination.pageChange(request, pag, pageSize, totRecCnt, startIndexNo, part);
+	  */
 	}
 
 }

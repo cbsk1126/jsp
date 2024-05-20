@@ -10,11 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import admin.AdminContentCommand;
-import admin.member.MemberDeleteOkCommand;
-import admin.member.MemberLevelChangeCommand;
-import admin.member.MemberListCommand;
-
 @SuppressWarnings("serial")
 @WebServlet("*.bo")
 public class BoardController extends HttpServlet {
@@ -80,6 +75,21 @@ public class BoardController extends HttpServlet {
 		}
 		else if(com.equals("/BoardGoodCheckPlusMinus")) {
 			command = new BoardGoodCheckPlusMinusCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardSearchList")) {
+			command = new BoardSearchListCommand();
+			command.execute(request, response);
+			viewPage += "/boardSearchList.jsp";
+		}
+		else if(com.equals("/BoardReplyInput")) {
+			command = new BoardReplyInputCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/BoardReplyDelete")) {
+			command = new BoardReplyDeleteCommand();
 			command.execute(request, response);
 			return;
 		}

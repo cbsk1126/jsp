@@ -124,7 +124,6 @@
     		type : "post",
     		data : query,
     		success:function(res) {
-    			alert(res);
     			if(res != "0") {
     				alert("신고 되었습니다.");
     				location.reload();
@@ -135,6 +134,60 @@
     			alert("전송 오류!");
     		}
    		});
+    }
+    
+    // 댓글달기
+    function replyCheck() {
+    	let content = $("#content").val();
+    	if(content.trim() == "") {
+    		alert("댓글을 입력하세요");
+    		return false;
+    	}
+    	let query = {
+    			boardIdx 	: ${vo.idx},
+    			mid				: '${sMid}',
+    			nickName	: '${sNickName}',
+    			hostIp    : '${pageContext.request.remoteAddr}',
+    			content		: content
+    	}
+    	
+    	$.ajax({
+    		url  : "BoardReplyInput.bo",
+    		type : "post",
+    		data : query,
+    		success:function(res) {
+    			if(res != "0") {
+    				alert("댓글이 입력되었습니다.");
+    				location.reload();
+    			}
+    			else alert("댓글 입력 실패~~");
+    		},
+    		error : function() {
+    			alert("전송 오류!");
+    		}
+    	});
+    }
+    
+    // 댓글 삭제하기
+    function replyDelete(idx) {
+    	let ans = confirm("선택한 댓글을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	$.ajax({
+    		url  : "BoardReplyDelete.bo",
+    		type : "post",
+    		data : {idx : idx},
+    		success:function(res) {
+    			if(res != "0") {
+    				alert("댓글이 삭제되었습니다.");
+    				location.reload();
+    			}
+    			else alert("삭제 실패~~");
+    		},
+    		error : function() {
+    			alert("전송 오류!");
+    		}
+    	});
     }
   </script>
 </head>
@@ -174,17 +227,19 @@
       <td colspan="4">
         <div class="row">
 	        <div class="col">
-	        	<input type="button" value="돌아가기" onclick="location.href='BoardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning" />
+	        	<c:if test="${empty flag}"><input type="button" value="돌아가기" onclick="location.href='BoardList.bo?pag=${pag}&pageSize=${pageSize}';" class="btn btn-warning" /></c:if>
+	        	<c:if test="${!empty flag}"><input type="button" value="돌아가기" onclick="location.href='BoardSearchList.bo?pag=${pag}&pageSize=${pageSize}&search=${search}&searchString=${searchString}';" class="btn btn-warning" /></c:if>
 	        </div>
 	        <c:if test="${sNickName == vo.nickName || sLevel == 0}">
 		        <div class="col text-right">
+	        		<c:if test="${report == 'OK'}"><font color='red'><b>현재 이글은 신고중입니다.</b></font></c:if>
 			        <input type="button" value="수정" onclick="location.href='BoardUpdate.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}';" class="btn btn-primary" />
 			        <input type="button" value="삭제" onclick="boardDelete()" class="btn btn-danger text-right" />
 		        </div>
 	        </c:if>
 	        <c:if test="${sNickName != vo.nickName}">
 		        <div class="col text-right">
-		          <c:if test="${report == 'OK'}"><font color='red'><b>현 이글은 신고중입니다.</b></font></c:if>
+		          <c:if test="${report == 'OK'}"><font color='red'><b>현재 이글은 신고중입니다.</b></font></c:if>
 			        <c:if test="${report != 'OK'}"><input type="button" value="신고하기" data-toggle="modal" data-target="#myModal" class="btn btn-danger text-right" /></c:if>
 		        </div>
 	        </c:if>
@@ -208,6 +263,51 @@
   </table>
 </div>
 <p><br/></p>
+
+<!-- 댓글 처리(리스트/입력) -->
+<div class="container">
+	<!-- 댓글 리스트 보여주기 -->
+	<table class="table table-hover text-center">
+	  <tr>
+	    <th>작성자</th>
+	    <th>댓글내용</th>
+	    <th>댓글일자</th>
+	    <th>접속IP</th>
+	  </tr>
+	  <c:forEach var="replyVo" items="${replyVos}" varStatus="st">
+	    <tr>
+	      <td>${replyVo.nickName}
+	        <c:if test="${sMid == replyVo.mid || sLevel == 0}">
+	          (<a href="javascript:replyDelete(${replyVo.idx})" title="댓글삭제">x</a>)
+	        </c:if>
+	      </td>
+	      <td class="text-left">${fn:replace(replyVo.content, newLine, "<br/>")}</td>
+	      <td>${fn:substring(replyVo.wDate, 0, 10)}</td>
+	      <td>${replyVo.hostIp}</td>
+	    </tr>
+	  </c:forEach>
+	  <tr><td colspan="4" class='m-0 p-0'></td></tr>
+	</table>
+	
+	<!-- 댓글 입력창 -->
+	<form name="replyForm">
+	  <table class="table table-center">
+	    <tr>
+	      <td style="width:85%" class="text-left">
+	        글내용 :
+	        <textarea rows="4" name="content" id="content" class="form-control"></textarea>
+	      </td>
+	      <td style="width:15%">
+	        <br/>
+	        <p>작성자 : ${sNickName}</p>
+	        <p><input type="button" value="댓글달기" onclick="replyCheck()" class="btn btn-info btn-sm"/></p>
+	      </td>
+	    </tr>
+	  </table>
+	</form>
+	<br/>
+</div>
+<!-- 댓글 처리 -->
 
 	<!-- 신고하기 폼 모달창 -->
   <div class="modal fade" id="myModal">

@@ -12,6 +12,7 @@ public class ComplaintVO {
 	private String title;
 	private String nickName;
 	private String mid;
+	private String content;
 	
 	public int getIdx() {
 		return idx;
@@ -73,11 +74,17 @@ public class ComplaintVO {
 	public void setComplaint(String complaint) {
 		this.complaint = complaint;
 	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 	
 	@Override
 	public String toString() {
 		return "ComplaintVO [idx=" + idx + ", part=" + part + ", partIdx=" + partIdx + ", cpMid=" + cpMid + ", cpContent="
 				+ cpContent + ", cpDate=" + cpDate + ", complaint=" + complaint + ", title=" + title + ", nickName=" + nickName
-				+ ", mid=" + mid + "]";
+				+ ", mid=" + mid + ", content=" + content + "]";
 	}
 }

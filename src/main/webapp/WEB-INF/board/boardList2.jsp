@@ -57,21 +57,18 @@
     </tr>
     <c:set var="curScrStartNo" value="${curScrStartNo}" />
     <c:forEach var="vo" items="${vos}" varStatus="st">
-      <%-- 
       <c:if test="${vo.openSw == 'OK' || sLevel == 0 || sNickName == vo.nickName}">
       	<c:if test="${vo.complaint == 'NO' || sLevel == 0 || sNickName == vo.nickName}">
-       --%>
 			    <tr>
 			      <td>${curScrStartNo}</td>
 			      <td class="text-left">
 			        <a href="BoardContent.bo?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}">${vo.title}</a>
 			        <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>  
-			        <c:if test="${vo.replyCnt != 0}">(${vo.replyCnt})</c:if>
 			      </td>
 			      <td>
 			        ${vo.nickName}
 			        <c:if test="${sLevel == 0}">
-			          <a href="#" onclick="modalCheck('${vo.idx}','${vo.hostIp}','${vo.mid}','${vo.nickName}')" data-toggle="modal" data-target="#myModal" class="badge badge-success">모달</a>
+			          <a href="#" onclick="modalCheck('${vo.idx}','${vo.hostIp}','${vo.mid}','${vo.nickName}')" data-toggle="modal" data-target="#myModal" class="btn btn-success btn-sm">모달출력</a>
 			        </c:if>
 			      </td>
 			      <td>
@@ -80,10 +77,8 @@
 			      </td>
 			      <td>${vo.readNum}(${vo.good})</td>
 			    </tr>
-			<%-- 
 		    </c:if>
 	    </c:if>
-	     --%>
 	    <c:set var="curScrStartNo" value="${curScrStartNo - 1}" />
 	  </c:forEach>
 	  <tr><td colspan="5" class="m-0 p-0"></td></tr>
@@ -103,21 +98,6 @@
 	  </ul>
 	</div>
 	<!-- 블록페이지 끝 -->
-	<br/>
-	<!-- 검색기 시작 -->
-	<div class="container text-center">
-	  <form name="searchForm" method="post" action="BoardSearchList.bo">
-	    <b>검색 : </b>
-	    <select name="search" id="search">
-	      <option value="title">글제목</option>
-	      <option value="nickName">글쓴이</option>
-	      <option value="content">글내용</option>
-	    </select>
-	    <input type="text" name="searchString" id="searchString" required />
-	    <input type="submit" value="검색" class="btn btn-secondary btn-sm"/>
-	  </form>
-	</div>
-	<!-- 검색기 끝 -->
 </div>
 <p><br/></p>
 

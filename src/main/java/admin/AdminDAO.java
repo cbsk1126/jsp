@@ -216,7 +216,8 @@ public class AdminDAO {
 	public ArrayList<ComplaintVO> ComplaintList() {
 		ArrayList<ComplaintVO> vos = new ArrayList<ComplaintVO>();
 		try {
-			sql = "select date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate, c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.complaint as complaint from complaint c, board b where c.partIdx = b.idx order by idx desc";
+			sql = "select date_format(c.cpDate, '%Y-%m-%d %H:%i') as cpDate, c.*, b.title as title, b.nickName as nickName, b.mid as mid, b.content as content, b.complaint as complaint "
+					+ "from complaint c, board b where c.partIdx = b.idx order by idx desc";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			
