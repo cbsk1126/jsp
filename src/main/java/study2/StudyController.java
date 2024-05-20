@@ -18,6 +18,7 @@ import study2.hoewon.HoewonMainCommand;
 import study2.hoewon.HoewonSearchCommand;
 import study2.hoewon.HoewonUpdateCommand;
 import study2.modal.ModelTestCommand;
+import study2.pdstest.FileDeleteCheckCommand;
 import study2.pdstest.FileDeleteCommand;
 import study2.pdstest.FileDownLoadCommand;
 import study2.pdstest.FileUpload1OkCommand;
@@ -140,6 +141,17 @@ public class StudyController extends HttpServlet {
 			command = new FileDeleteCommand();
 			command.execute(request, response);
 			return;
+		}
+		else if(com.equals("FileDeleteCheck")) {
+			command = new FileDeleteCheckCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("FileUpload5")) {
+			viewPage += "/pdstest/fileUpload5.jsp";
+		}
+		else if(com.equals("FileUpload6")) {
+			viewPage += "/pdstest/fileUpload6.jsp";
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

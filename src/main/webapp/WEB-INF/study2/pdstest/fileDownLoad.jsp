@@ -29,6 +29,64 @@
     		}
     	});
     }
+    
+    // 전체선택
+    function allCheck() {
+      for(let i=0; i<myform.idxFlag.length; i++) {
+        myform.idxFlag[i].checked = true;
+      }
+    }
+
+    // 전체취소
+    function allReset() {
+      for(let i=0; i<myform.idxFlag.length; i++) {
+        myform.idxFlag[i].checked = false;
+      }
+    }
+
+    // 선택반전
+    function reverseCheck() {
+      for(let i=0; i<myform.idxFlag.length; i++) {
+        myform.idxFlag[i].checked = !myform.idxFlag[i].checked;
+      }
+    }
+    
+    // 선택항목 삭제처리
+    function selectFileDelete() {
+    	let selectFileArray = '';
+    	
+      for(let i=0; i<myform.fileFlag.length; i++) {
+        if(myform.fileFlag[i].checked) selectFileArray += myform.fileFlag[i].value + "/";
+      }
+    	if(selectFileArray == '') {
+    		alert("등급을 변경할 항목을 1개 이상 선택하세요");
+    		return false;
+    	}
+    	
+    	let ans = confirm("선택된 파일을 삭제하시겠습니까?");
+    	if(!ans) return false;
+    	
+    	selectFileArray = selectFileArray.substring(0,selectFileArray.lastIndexOf("/"));
+      let query = {
+    		  selectFileArray : selectFileArray
+      }
+      
+      $.ajax({
+    	  url  : "FileDeleteCheck.st",
+    	  type : "post",
+    	  data : query,
+    	  success:function(res) {
+    		  if(res != "0") { 
+    			  alert("선택한 항목들을 삭제하셨습니다.");
+    			  location.reload();
+    		  }
+    		  else alert("삭제 실패~");
+    	  },
+    	  error : function() {
+    		  alert("전송 실패~~");
+    	  }
+      });
+    }
   </script>
 </head>
 <body>
@@ -38,22 +96,32 @@
 <div class="container">
   <h2>저장된 파일 정보</h2>
   <hr/>
-  <c:forEach var="file" items="${files}" varStatus="st">
-    ${st.count}. <a href="${ctp}/images/pdstest/${file}" download="${file}">${file}</a>
-    <input type="button" value="삭제" onclick="fileDelete('${file}')" class="btn btn-danger btn-sm"/>
-    <br/>
-    <c:set var="fNameArr" value="${fn:split(file,'.')}"/>
-    <c:set var="extName" value="${fn:toLowerCase(fNameArr[fn:length(fNameArr)-1])}"/>
-    <font color="blue">
-	    <c:if test="${extName == 'zip'}">압축파일</c:if>
-	    <c:if test="${extName == 'ppt' || extName == 'pptx'}">파워포인트파일</c:if>
-	    <c:if test="${extName == 'xls' || extName == 'xlsx'}">엑셀파일</c:if>
-    </font>
-    <c:if test="${extName == 'jpg' || extName == 'png' || extName == 'gif'}">
-      <img src="${ctp}/images/pdstest/${file}" width="150px"/>
-    </c:if>
-    <br/><br/>
-  </c:forEach>
+  <div class="input-group">
+    <input type="button" value="전체선택" onclick="allCheck()" class="btn btn-success btn-sm mr-1"/>
+    <input type="button" value="전체취소" onclick="allReset()" class="btn btn-primary btn-sm mr-1"/>
+    <input type="button" value="선택반전" onclick="reverseCheck()" class="btn btn-info btn-sm mr-1"/>
+    <input type="button" value="선택항목삭제" onclick="selectFileDelete()" class="btn btn-danger btn-sm" />
+  </div>
+  <hr/>
+  <form name="myform">
+	  <c:forEach var="file" items="${files}" varStatus="st">
+	    <input type="checkbox" name="fileFlag" id="fileFlag${st.index}" value="${file}"/>
+	    ${st.count} : <a href="${ctp}/images/pdstest/${file}" download="${file}">${file}</a>
+	    <input type="button" value="삭제" onclick="fileDelete('${file}')" class="btn btn-danger btn-sm"/>
+	    <br/>
+	    <c:set var="fNameArr" value="${fn:split(file,'.')}"/>
+	    <c:set var="extName" value="${fn:toLowerCase(fNameArr[fn:length(fNameArr)-1])}"/>
+	    <font color="blue">
+		    <c:if test="${extName == 'zip'}">압축파일</c:if>
+		    <c:if test="${extName == 'ppt' || extName == 'pptx'}">파워포인트파일</c:if>
+		    <c:if test="${extName == 'xls' || extName == 'xlsx'}">엑셀파일</c:if>
+	    </font>
+	    <c:if test="${extName == 'jpg' || extName == 'png' || extName == 'gif'}">
+	      <img src="${ctp}/images/pdstest/${file}" width="150px"/>
+	    </c:if>
+	    <br/><br/>
+	  </c:forEach>
+  </form>
   <hr/>
   <p>
     <input type="button" value="돌아가기" onclick="location.href='FileUpload4.st';" class="btn btn-success"/>

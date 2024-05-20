@@ -68,6 +68,8 @@
 				      <a class="dropdown-item" href="FileUpload2.st">멀티파일업로드2</a>
 				      <a class="dropdown-item" href="FileUpload3.st">멀티파일업로드3</a>
 				      <a class="dropdown-item" href="FileUpload4.st">멀티파일업로드4</a>
+				      <a class="dropdown-item" href="FileUpload5.st">멀티파일업로드5</a>
+				      <a class="dropdown-item" href="FileUpload6.st">멀티파일업로드6</a>
 				    </div>
 				  </div>
 	      </li>

@@ -14,6 +14,7 @@ import study2.StudyInterface;
 
 public class FileUpload3OkCommand implements StudyInterface {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String realPath = request.getServletContext().getRealPath("/images/pdstest");

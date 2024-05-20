@@ -14,6 +14,7 @@ import study2.StudyInterface;
 
 public class FileUpload4OkCommand implements StudyInterface {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String realPath = request.getServletContext().getRealPath("/images/pdstest");
@@ -23,12 +24,9 @@ public class FileUpload4OkCommand implements StudyInterface {
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		
 		// 업로드된 파일의 정보를 추출해본다.
-//		Enumeration fName = multipartRequest.getFileNames();
-//		while(fName.hasMoreElements()) {
-//			String name = (String) fName.nextElement();
-//			System.out.println("name : " + name);
-//		}
 		
+		String fNames = multipartRequest.getParameter("fNames");
+	
 		Enumeration fileNames = multipartRequest.getFileNames();
 		String file = "";
 		String oFileName = "";
@@ -36,18 +34,16 @@ public class FileUpload4OkCommand implements StudyInterface {
 		
 		while(fileNames.hasMoreElements()) {
 			file = (String) fileNames.nextElement();
-//			oFileName += multipartRequest.getOriginalFileName(file) + "/";
-//			fsName += multipartRequest.getFilesystemName(file) + "/";
-			oFileName = multipartRequest.getOriginalFileName(file);
-			fsName = multipartRequest.getFilesystemName(file);
-			System.out.println("원본 파일명 : " + oFileName);
-			System.out.println("서버에 저장된 파일명 : " + fsName);
+			oFileName += multipartRequest.getOriginalFileName(file) + "/";
+			fsName += multipartRequest.getFilesystemName(file) + "/";
 		}
-//		oFileName = oFileName.substring(0, oFileName.lastIndexOf("/"));
-//		fsName = fsName.substring(0, fsName.lastIndexOf("/"));
+		oFileName = oFileName.substring(0, oFileName.lastIndexOf("/"));
+		fsName = fsName.substring(0, fsName.lastIndexOf("/"));
 		
-//		System.out.println("원본 파일명 : " + oFileName);
-//		System.out.println("서버에 저장된 파일명 : " + fsName);
+		System.out.println("원본 파일명 : " + oFileName);
+		System.out.println("서버에 저장된 파일명 : " + fsName);
+		
+		System.out.println("클라이언트에서 업로드된 파일명 : " + fNames);
 		
 		if(oFileName != null && !oFileName.equals("")) {
 			request.setAttribute("message", "파일이 업로드 되었습니다.");
