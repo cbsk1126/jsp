@@ -81,7 +81,25 @@
 				tel = tel1 + "-" + tel2 + "-" + tel3;
 			}
 			
+			// 전송전에 파일에 관련된 사항들을 체크해준다.
+			let fName = document.getElementById("file").value;
+			if(fName.trim() != "") {
+				let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
+				let maxSize = 1024 * 1024 * 5;
+				let fileSize = document.getElementById("file").files[0].size;
+				
+				if(ext != 'jpg' && ext != 'gif' && ext != 'png') {
+					alert("그림파일만 업로드 가능합니다.");
+					return false;
+				}
+				else if(fileSize > maxSize) {
+					alert("업로드할 파일의 최대용량은 5MByte입니다.");
+					return false;
+				}
+			}
+			else return false;			
     	
+			// 아이디/닉네임 중복체크
     	if(idCheckSw == 0) {
     		alert("아이디 중복체크버튼을 눌러주세요");
     		document.getElementById("midBtn").focus();
@@ -167,6 +185,17 @@
     	});
     	
     });
+    
+    // 선택된 사진 미리보기
+    function imgCheck(e) {
+    	if(e.files && e.files[0]) {
+    		let reader = new FileReader();
+    		reader.onload = function(e) {
+    			document.getElementById("photoDemo").src = e.target.result;
+    		}
+    		reader.readAsDataURL(e.files[0]);
+    	}
+    }
   </script>
 </head>
 <body>
@@ -174,7 +203,7 @@
 <jsp:include page="/include/nav.jsp" />
 <p><br/></p>
 <div class="container">
-  <form name="myform" method="post" action="${ctp}/MemberJoinOk.mem" class="was-validated">
+  <form name="myform" method="post" action="${ctp}/MemberJoinOk.mem" class="was-validated" enctype="multipart/form-data">
     <h2>회 원 가 입</h2>
     <br/>
     <div class="form-group">
@@ -345,7 +374,8 @@
     </div>
     <div  class="form-group">
       회원 사진(파일용량:2MByte이내) :
-      <input type="file" name="fName" id="file" class="form-control-file border"/>
+      <input type="file" name="fName" id="file" onchange="imgCheck(this)" class="form-control-file border"/>
+      <div><img id="photoDemo" width="100px"/></div>
     </div>
     <button type="button" class="btn btn-secondary" onclick="fCheck()">회원가입</button> &nbsp;
     <button type="reset" class="btn btn-secondary">다시작성</button> &nbsp;

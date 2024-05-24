@@ -24,7 +24,7 @@
 	    </c:if>
       <c:if test="${level <= 4 && (level > 1 || level == 0)}">
 	      <li class="nav-item">
-	        <a class="nav-link" href="#">PDS</a>
+	        <a class="nav-link" href="PdsList.pds">PDS</a>
 	      </li>    
 	      <li class="nav-item mr-2">
 				  <div class="dropdown">
@@ -64,12 +64,16 @@
 				      <a class="dropdown-item" href="${ctp}/study/database/login.jsp">로그인연습</a>
 				      <a class="dropdown-item" href="Modal1.st">모달연습1</a>
 				      <a class="dropdown-item" href="Modal2.st">모달연습2</a>
-				      <a class="dropdown-item" href="FileUpload1.st">싱글파일업로드</a>
-				      <a class="dropdown-item" href="FileUpload2.st">멀티파일업로드2</a>
-				      <a class="dropdown-item" href="FileUpload3.st">멀티파일업로드3</a>
-				      <a class="dropdown-item" href="FileUpload4.st">멀티파일업로드4</a>
-				      <a class="dropdown-item" href="FileUpload5.st">멀티파일업로드5</a>
-				      <a class="dropdown-item" href="FileUpload6.st">멀티파일업로드6</a>
+				      <a class="dropdown-item" href="FileUpload.st">파일업로드</a>
+				    </div>
+				  </div>
+	      </li>
+	      <li class="nav-item mr-2">
+				  <div class="dropdown">
+				    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Study3</button>
+				    <div class="dropdown-menu">
+				      <a class="dropdown-item" href="Calendar1.st">달력연습1</a>
+				      <a class="dropdown-item" href="Calendar2.st">달력연습2</a>
 				    </div>
 				  </div>
 	      </li>
@@ -81,7 +85,7 @@
 				    <div class="dropdown-menu">
 				      <a class="dropdown-item" href="MemberMain.mem">회원메인방</a>
 				      <c:if test="${level <= 4 && (level > 1 || level == 0)}">
-					      <a class="dropdown-item" href="#">일정관리</a>
+					      <a class="dropdown-item" href="Schedule.sc">일정관리</a>
 					      <a class="dropdown-item" href="#">메세지관리</a>
 				      	<a class="dropdown-item" href="MemberList.mem">회원리스트</a>
 				      </c:if>

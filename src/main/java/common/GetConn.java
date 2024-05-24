@@ -12,6 +12,7 @@ public class GetConn {
 	private String user = "root";
 	private String password = "1234";
 	
+	@SuppressWarnings("unused")
 	private static GetConn instance = new GetConn();
 	
 	private GetConn() {
@@ -25,9 +26,9 @@ public class GetConn {
 		}
 	}
 	
-	public static GetConn getInstance() {
-		return instance;
-	}
+//	public static GetConn getInstance() {
+//		return instance;
+//	}
 	
 	public static Connection getConn() {
 		return conn;

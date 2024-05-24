@@ -12,8 +12,6 @@
     'use strict';
     
     function fCheck() {
-    	//let fName = document.getElementById("file").value;
-    	//let ext = fName.substring(fName.lastIndexOf(".")+1).toLowerCase();
     	let fName = document.getElementById("file").value;
     	let fNames = "";
     	let ext = "";
@@ -41,7 +39,6 @@
     		alert("업로드 파일의 최대용량은 10MByte입니다.");
     	}
     	else {
-    		//alert("파일 전송!!!");
     		document.getElementById("fNames").value = fNames;
     		myform.submit();
     	}
@@ -68,7 +65,10 @@
     <input type="hidden" name="fNames" id="fNames"/>
   </form>
   <hr/>
-  <div><a href="FileDownLoad.st" class="btn btn-primary form-control">다운로드폴더로 이동하기</a></div>
+  <div class="row">
+  	<div class="col"><a href="FileDownLoad.st" class="btn btn-primary form-control">다운로드폴더로 이동하기</a></div>
+  	<div class="col text-center"><a href="FileUpload.st" class="btn btn-warning form-control">돌아가기</a></div>
+  </div>
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />

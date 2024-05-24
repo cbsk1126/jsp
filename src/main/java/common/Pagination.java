@@ -6,13 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import board.BoardDAO;
 import board.BoardVO;
+import pds.PdsDAO;
+import pds.PdsVO;
 
 public class Pagination {
 
 	public static void pageChange(HttpServletRequest request, int pag, int pageSize, String contentsShow, String section,	String part) {
 		// 사용하는 vo가 각각 다르기에 하나의 DAO를 사용하는것 보다는, 해당 DAO에서 처리하는것이 더 편리하다.
 		BoardDAO boardDao = new BoardDAO();
-		//PdsDAO pdsDao = new PdsDAO();
+		PdsDAO pdsDao = new PdsDAO();
 		
 		// part의 값이 넘어올경우는 search/searchString 의 값이 넘어올경우와, _____ 가 있다.
 		String search = "", searchString = "";
@@ -34,7 +36,7 @@ public class Pagination {
 			}
 		}
 		else if(section.equals("pds")) {
-			//totRecCnt = pdsDao.getTotRecCnt(contentsShow);	// 자료실의 전체/조건에 따른 레코드수 구하기
+			totRecCnt = pdsDao.getTotRecCnt(part);	// 자료실의 전체/조건에 따른 레코드수 구하기
 		}
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
@@ -46,21 +48,22 @@ public class Pagination {
 		int curBlock = (pag - 1) / blockSize;
 		int lastBlock = (totPage - 1) / blockSize;
 		
-		List<BoardVO> vos = null;
-		//List<PdsVO> vos = null;
+		List<BoardVO> boardVos = null;
+		List<PdsVO> pdsVos = null;
 		
 		if(section.equals("board")) {
 			if(part == null || part.equals("")) {
-			  vos = boardDao.getBoardList(startIndexNo, pageSize, contentsShow, "", "");	// 게시판의 전체 자료 가져오기
+				boardVos = boardDao.getBoardList(startIndexNo, pageSize, contentsShow, "", "");	// 게시판의 전체 자료 가져오기
 			}
 			else {
-				vos = boardDao.getBoardList(startIndexNo, pageSize, contentsShow, search, searchString);
+				boardVos = boardDao.getBoardList(startIndexNo, pageSize, contentsShow, search, searchString);
 			}
+			request.setAttribute("vos", boardVos);
 		}
 		else if(section.equals("pds")) {
-			//vos = pdsDao.getBoardList(startIndexNo, pageSize, contentsShow);	// 자료실의 전체 자료 가져오기
+			pdsVos = pdsDao.getPdsList(startIndexNo, pageSize, part);	// 자료실의 전체 자료 가져오기
+			request.setAttribute("vos", pdsVos);
 		}
-		request.setAttribute("vos", vos);
 		
 		request.setAttribute("pag", pag);
 		request.setAttribute("pageSize", pageSize);
@@ -71,7 +74,7 @@ public class Pagination {
 		request.setAttribute("curBlock", curBlock);
 		request.setAttribute("lastBlock", lastBlock);
 		
-		if(part != null && !part.equals("")) {
+		if(section.equals("board") && part != null && !part.equals("")) {
 			String searchTitle = "";
 			if(search.equals("title")) searchTitle = "글제목";
 			else if(search.equals("nickName")) searchTitle = "글쓴이";
@@ -80,6 +83,9 @@ public class Pagination {
 			request.setAttribute("searchTitle", searchTitle);
 			request.setAttribute("searchString", searchString);
 			request.setAttribute("searchCount", totRecCnt);
+		}
+		else if(section.equals("pds")) {
+			request.setAttribute("part", part);
 		}
 	}
 

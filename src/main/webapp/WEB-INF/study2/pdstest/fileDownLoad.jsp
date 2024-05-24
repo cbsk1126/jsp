@@ -32,22 +32,22 @@
     
     // 전체선택
     function allCheck() {
-      for(let i=0; i<myform.idxFlag.length; i++) {
-        myform.idxFlag[i].checked = true;
+      for(let i=0; i<myform.fileFlag.length; i++) {
+        myform.fileFlag[i].checked = true;
       }
     }
 
     // 전체취소
     function allReset() {
-      for(let i=0; i<myform.idxFlag.length; i++) {
-        myform.idxFlag[i].checked = false;
+      for(let i=0; i<myform.fileFlag.length; i++) {
+        myform.fileFlag[i].checked = false;
       }
     }
 
     // 선택반전
     function reverseCheck() {
-      for(let i=0; i<myform.idxFlag.length; i++) {
-        myform.idxFlag[i].checked = !myform.idxFlag[i].checked;
+      for(let i=0; i<myform.fileFlag.length; i++) {
+        myform.fileFlag[i].checked = !myform.fileFlag[i].checked;
       }
     }
     
@@ -59,7 +59,7 @@
         if(myform.fileFlag[i].checked) selectFileArray += myform.fileFlag[i].value + "/";
       }
     	if(selectFileArray == '') {
-    		alert("등급을 변경할 항목을 1개 이상 선택하세요");
+    		alert("삭제할 파일 항목을 1개 이상 선택하세요");
     		return false;
     	}
     	
@@ -96,11 +96,16 @@
 <div class="container">
   <h2>저장된 파일 정보</h2>
   <hr/>
-  <div class="input-group">
-    <input type="button" value="전체선택" onclick="allCheck()" class="btn btn-success btn-sm mr-1"/>
-    <input type="button" value="전체취소" onclick="allReset()" class="btn btn-primary btn-sm mr-1"/>
-    <input type="button" value="선택반전" onclick="reverseCheck()" class="btn btn-info btn-sm mr-1"/>
-    <input type="button" value="선택항목삭제" onclick="selectFileDelete()" class="btn btn-danger btn-sm" />
+  <div class="row">
+	  <div class="col input-group">
+	    <input type="button" value="전체선택" onclick="allCheck()" class="btn btn-success btn-sm mr-1"/>
+	    <input type="button" value="전체취소" onclick="allReset()" class="btn btn-primary btn-sm mr-1"/>
+	    <input type="button" value="선택반전" onclick="reverseCheck()" class="btn btn-info btn-sm mr-1"/>
+	    <input type="button" value="선택항목삭제" onclick="selectFileDelete()" class="btn btn-danger btn-sm" />
+	  </div>
+	  <div class="col text-right">
+	    <a href="FileUpload.st" class="btn btn-warning">돌아가기</a>
+	  </div>
   </div>
   <hr/>
   <form name="myform">
@@ -108,6 +113,7 @@
 	    <input type="checkbox" name="fileFlag" id="fileFlag${st.index}" value="${file}"/>
 	    ${st.count} : <a href="${ctp}/images/pdstest/${file}" download="${file}">${file}</a>
 	    <input type="button" value="삭제" onclick="fileDelete('${file}')" class="btn btn-danger btn-sm"/>
+	    <input type="button" value="자바다운로드" onclick="location.href='JavaFileDownload.st?file=${file}';" class="btn btn-secondary"/>
 	    <br/>
 	    <c:set var="fNameArr" value="${fn:split(file,'.')}"/>
 	    <c:set var="extName" value="${fn:toLowerCase(fNameArr[fn:length(fNameArr)-1])}"/>

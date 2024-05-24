@@ -14,7 +14,7 @@ public class FileDeleteCheckCommand implements StudyInterface {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String[] selectFileArray = request.getParameter("selectFileArray").split("/");
-		System.out.println("selectFileArray[i] : " + selectFileArray[0]);
+		// System.out.println("selectFileArray[i] : " + selectFileArray[0]);
 		
 		String realPath = request.getServletContext().getRealPath("/images/pdstest/");
 		

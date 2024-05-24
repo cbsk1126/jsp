@@ -13,10 +13,9 @@
     
     function fCheck() {
     	let fName = document.getElementById("file").value;
-    	let fNames = "";
     	let ext = "";
     	let fileSize = 0;
-    	let maxSize = 1024 * 1024 * 10;
+    	let maxSize = 1024 * 1024 * 10;	// 기본 단위 : Byte,   1024 * 1024 * 10 = 10MByte 허용
     	
     	if(fName.trim() == "") {
     		alert("업로드할 파일을 선택하세요");
@@ -32,14 +31,12 @@
 	    	if(ext != 'jpg' && ext != 'gif' && ext != 'png' && ext != 'zip' && ext != 'hwp' && ext != 'ppt' && ext != 'pptx' && ext != 'doc' && ext != 'pdf' && ext != 'xlsx' && ext != 'txt') {
 	    		alert("업로드 가능한 파일은 'jpg/gif/png/zip/hwp/ppt/pptx/doc/pdf/xlsx/txt'만 가능합니다.");
 	    	}
-	    	fNames += fName + "/";
     	}
     	
     	if(fileSize > maxSize) {
     		alert("업로드 파일의 최대용량은 10MByte입니다.");
     	}
     	else {
-    		document.getElementById("fNames").value = fNames;
     		myform.submit();
     	}
     }
@@ -52,20 +49,21 @@
 <p><br/></p>
 <div class="container">
   <h2>파일 업로드 연습(싱글파일처리)</h2>
-  <p>Java에서의 파일 업로드</p>
-  <div>(Part객체 이용)</div>
+  <h4>자바 서블릿의 Part객체를 이용한 파일 업로드</h4>
+  <div>(javax.servlet.http.Part)</div>
   <hr/>
   <form name="myform" method="post" action="FileUpload5Ok" enctype="multipart/form-data">
     파일명 : 
     <div>
-    	<input type="file" name="fName" id="file" class="form-control-file border mb-2" />	<!-- 실제로는 1개파일만 전송된다. -->
+    	<input type="file" name="fName" id="file" class="form-control-file border mb-2" />
     </div>
     <input type="button" value="파일전송" onclick="fCheck()" class="btn btn-success form-control"/>
-    <input type="hidden" name="nickName" value="${sNickName}"/>
-    <input type="hidden" name="fNames" id="fNames"/>
   </form>
   <hr/>
-  <div><a href="FileDownLoad.st" class="btn btn-primary form-control">다운로드폴더로 이동하기</a></div>
+  <div class="row">
+  	<div class="col"><a href="FileDownLoad.st" class="btn btn-primary form-control">다운로드폴더로 이동하기</a></div>
+  	<div class="col text-center"><a href="FileUpload.st" class="btn btn-warning form-control">돌아가기</a></div>
+  </div>
 </div>
 <p><br/></p>
 <jsp:include page="/include/footer.jsp" />
