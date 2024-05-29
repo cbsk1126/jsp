@@ -9,10 +9,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>wmContent.jsp</title>
-  <%@ include file = "/include/bs4.jsp" %>
+  <%-- <%@ include file = "/include/bs4.jsp" %> --%>
+  <style>
+    th {
+      background-color: #dee;
+    }
+    td {
+      text-align: left;
+    }
+  </style>
 </head>
 <body>
-<p><br/></p>
 <div class="container">
   <table class="table table-bordered">
     <tr>
@@ -29,13 +36,20 @@
     </tr>
     <tr>
       <th>메세지 내용</th>
-      <td>${fn:replace(vo.content, newLine, "<br/>")}</td>
+      <td style="height: 160px;">${fn:replace(vo.content, newLine, "<br/>")}</td>
     </tr>
     <tr>
       <td colspan="2" class="text-center">
-        <input type="button" value="답장쓰기" onclick="location.href='WebMessage.wm?mSw=0&receiveId=${vo.sendId}';" class="btn btn-success"/>
-        <input type="button" value="휴지통으로" onclick="location.href='WmDeleteCheck.wm?idx=${vo.idx}&mSw=${param.mFlag}';" class="btn btn-danger"/>
-        <input type="button" value="돌아가기" onclick="location.href='WebMessage.wm?mSw=1&mFlag=11';" class="btn btn-warning"/>
+        <c:if test="${param.mFlag==11 || param.mFlag==12}">
+        	<input type="button" value="답장쓰기" onclick="location.href='WebMessage.wm?mSw=0&receiveId=${vo.sendId}';" class="btn btn-success"/>
+        </c:if>
+        <c:if test="${param.mFlag == 15}">
+        	<input type="button" value="복원하기" onclick="location.href='WmRestore.wm?idx=${vo.idx}';" class="btn btn-success"/>
+        </c:if>
+        <c:if test="${param.mFlag != 15}">
+          <input type="button" value="휴지통으로" onclick="location.href='WmDeleteCheck.wm?idx=${vo.idx}&mFlag=${param.mFlag}';" class="btn btn-danger"/>
+        </c:if>
+        <input type="button" value="돌아가기" onclick="location.href='WebMessage.wm?mFlag=${param.mFlag}';" class="btn btn-warning"/>
       </td>
     </tr>
   </table>

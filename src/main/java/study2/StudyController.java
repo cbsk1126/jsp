@@ -28,6 +28,10 @@ import study2.pdstest.FileUpload2OkCommand;
 import study2.pdstest.FileUpload3OkCommand;
 import study2.pdstest.FileUpload4OkCommand;
 import study2.pdstest.JavaFileDownloadCommand;
+import study2.scrollPage.ScrollPageCommand;
+import study2.transaction.TransactionBankBookCommand;
+import study2.transaction.TransactionTest1Command;
+import study2.transaction.TransactionTest2Command;
 
 @SuppressWarnings("serial")
 @WebServlet("*.st")
@@ -173,6 +177,40 @@ public class StudyController extends HttpServlet {
 			command = new Calendar2Command();
 			command.execute(request, response);
 			viewPage += "/calendar/calendar2.jsp";
+		}
+		else if(com.equals("ScrollStudy")) {
+			viewPage += "/scrollPage/scrollStudy.jsp";
+		}
+		else if(com.equals("ScrollBasic")) {
+			command = new ScrollPageCommand();
+			command.execute(request, response);
+			viewPage += "/scrollPage/scrollBasic.jsp";
+		}
+		else if(com.equals("ScrollPage")) {
+			command = new ScrollPageCommand();
+			command.execute(request, response);
+			viewPage += "/scrollPage/scrollPage.jsp";
+		}
+		else if(com.equals("Transaction")) {
+			viewPage += "/transaction/transaction.jsp";
+		}
+		else if(com.equals("TransactionBankBook")) {
+			command = new TransactionBankBookCommand();
+			command.execute(request, response);
+			viewPage += "/transaction/transactionBankBook.jsp";
+		}
+		else if(com.equals("TransactionTest1")) {
+			command = new TransactionTest1Command();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("TransactionTest2")) {
+			command = new TransactionTest2Command();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
+		}
+		else if(com.equals("Translator")) {
+			viewPage += "/translator/translator.jsp";
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

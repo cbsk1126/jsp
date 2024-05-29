@@ -39,23 +39,23 @@ public class WebMessageDAO {
 	}
 
 	// 메세지 전체 리스트보기
-	public ArrayList<WebMessageVO> getMessagList(String mid, int mSw) {
+	public ArrayList<WebMessageVO> getMessagList(String mid, int mSw, int startIndexNo, int pageSize) {
 		ArrayList<WebMessageVO> vos = new ArrayList<WebMessageVO>();
 		try {
 			if(mSw == 1 ) {	// 받은 메세지(처음에는 전체메세지(새메세지+읽은메세지)
-				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where receiveId=? and (receiveSw='n' or receiveSw='r') order by idx desc";
+				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where receiveId=? and (receiveSw='n' or receiveSw='r') order by idx desc limit ?,?";
 			}
 			else if(mSw == 2 ) {	// 신규메세지
-				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where receiveId=? and receiveSw='n' order by idx desc";
+				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where receiveId=? and receiveSw='n' order by idx desc limit ?,?";
 			}
 			else if(mSw == 3 ) {	// 보낸메세지
-				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where sendId=? and sendSw='s' order by idx desc";
+				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where sendId=? and sendSw='s' order by idx desc limit ?,?";
 			}
 			else if(mSw == 4 ) {	// 보낸메세지
-				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where sendId=? and receiveSw='n' order by idx desc";
+				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where sendId=? and receiveSw='n' order by idx desc limit ?,?";
 			}
 			else if(mSw == 5 ) {	// 휴지통
-				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where (receiveId=? and receiveSw='g') or (sendId=? and sendSw='g') order by idx desc";
+				sql = "select *,timestampdiff(hour, sendDate, now()) as hour_diff from webMessage where (receiveId=? and receiveSw='g') or (sendId=? and sendSw='g') order by idx desc limit ?,?";
 			}
 			else {	// mSW가 0(메세지작성), 6(내용보기)
 				return vos;
@@ -65,6 +65,12 @@ public class WebMessageDAO {
 			pstmt.setString(1, mid);
 			if(mSw == 5) {
 				pstmt.setString(2, mid);
+				pstmt.setInt(3, startIndexNo);
+				pstmt.setInt(4, pageSize);
+			}
+			else {
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
 			}
 			rs = pstmt.executeQuery();
 			
@@ -115,7 +121,7 @@ public class WebMessageDAO {
 	public WebMessageVO getWebMessageContent(int idx, int mFlag) {
 		WebMessageVO vo = new WebMessageVO();
 		try {
-			if(mFlag == 11) {	// 받은메세지에서 신규메세지 클릭하면 n 을 r으로 변경하기
+			if(mFlag == 11 || mFlag == 12) {	// '받은메세지' 또는 '신규메세지'에서 신규메세지 항목을 클릭하면 n 을 r으로 변경하기
 				sql = "update webMessage set receiveSw='r', receiveDate=now() where idx=?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, idx);
@@ -148,10 +154,13 @@ public class WebMessageDAO {
 	public int wmDeleteCheck(int idx, int mSw) {
 		int res = 0;
 		try {
-			if(mSw == 11) {	// mSw(=mFlag)값이 11은 받은편지함에서 휴지통으로 보낸경우
+			if(mSw == 11 || mSw ==12) {	// mSw(=mFlag)값이 11은 받은편지함에서 휴지통으로 보낸경우, mSw는 새편지함에서 휴지통으로 넣은경우.
 			  sql = "update webMessage set receiveSw='g' where idx = ?";
 			}
-			else {
+			else if(mSw == 13) {	// mSw(=mFlag)값이 13은 보낸편지함에서 휴지통으로 보낸경우
+				sql = "update webMessage set sendSw='g' where idx = ?";
+			}
+			else {	// mSw(=mFlag)값이 133이 올때는 휴지통거치지않고 삭제처리(x)
 				sql = "update webMessage set sendSw='x' where idx = ?";
 			}
 			pstmt = conn.prepareStatement(sql);
@@ -194,6 +203,103 @@ public class WebMessageDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	// 조건에 맞는 메세지 건수 구하기
+	public int getWmTotRecCnt(String mid, int mSw) {
+		int totRecCnt = 0;
+		try {
+			sql = "";
+			if(mSw == 1) 	// 받은메세지(새메세지 + 읽은메세지)
+				sql = "select count(*) from webMessage where receiveId=? and (receiveSw='n' or receiveSw='r')";
+			else if(mSw == 2) 	// 새메세지(새메세지)
+				sql = "select count(*) from webMessage where receiveId=? and receiveSw='n'";
+			else if(mSw == 3) 	// 보낸메세지
+				sql = "select count(*) from webMessage where sendId=? and sendSw='s'";
+			else if(mSw == 4) 	// 수신확인
+				sql = "select count(*) from webMessage where sendId=? and receiveSw='n'";
+			else if(mSw == 5) 	// 휴지통
+				sql = "select count(*) from webMessage where (receiveId=? and receiveSw='g') or (sendId=? and sendSw='g')";
+			else return totRecCnt;
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			if(mSw == 5) pstmt.setString(2, mid);
+			
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt(1);
+		} catch (SQLException e) {
+			System.out.println("SQL오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecCnt;
+	}
+
+	// 회원 부분 검색하기
+	public ArrayList<MemberVO> getIdSearchCheck(String mid) {
+		ArrayList<MemberVO> vos = new ArrayList<MemberVO>();
+		try {
+			sql = "select idx,mid,nickName from member where mid like ? order by mid";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%"+mid+"%");
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MemberVO vo = new MemberVO();
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setNickName(rs.getString("nickName"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 고유번호(idx)로 메세지 내역 가져오기
+	public WebMessageVO getWebMessageIxdSearch(int idx) {
+		WebMessageVO vo = new WebMessageVO();
+		try {
+			sql = "select * from webMessage where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			rs = pstmt.executeQuery();
+			rs.next();
+			
+			vo.setIdx(rs.getInt("idx"));
+			vo.setTitle(rs.getString("title"));
+			vo.setContent(rs.getString("content"));
+			vo.setSendId(rs.getString("sendId"));
+			vo.setSendSw(rs.getString("sendSw"));
+			vo.setSendDate(rs.getString("sendDate"));
+			vo.setReceiveId(rs.getString("receiveId"));
+			vo.setReceiveSw(rs.getString("receiveSw"));
+			vo.setReceiveDate(rs.getString("receiveDate"));
+		} catch (SQLException e) {
+			System.out.println("SQL오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
+
+	// 메세지 복원시키기
+	public void setWmRestore(int idx, String sw) {
+		try {
+			if(sw.equals("s")) sql = "update webMessage set sendSw = 's' where idx = ?";
+			else sql = "update webMessage set receiveSw = 'r' where idx = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, idx);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();
+		}
 	}
 
 }

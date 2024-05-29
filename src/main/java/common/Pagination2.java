@@ -4,7 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 public class Pagination2 {
 
-	public static void pageChange(HttpServletRequest request, int pag, int pageSize, int totRecCnt, int startIndexNo,	String part) {
+	// public static void pageChange(HttpServletRequest request, int pag, int pageSize, int totRecCnt, int startIndexNo,	String searchs) {
+	public static void pageChange(HttpServletRequest request, int pag, int pageSize, int totRecCnt, int startIndexNo) {
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize) + 1;
 		if(pag > totPage) pag = 1;
@@ -22,8 +23,15 @@ public class Pagination2 {
 		request.setAttribute("curBlock", curBlock);
 		request.setAttribute("lastBlock", lastBlock);
 		
-		request.setAttribute("part", part);
-		
+		/*
+		if(!searchs.equals("")) {
+			String search = "", searchString = "";
+			search = searchs.split("/")[0];
+			searchString = searchs.split("/")[1];
+			request.setAttribute("search", search);
+			request.setAttribute("searchString", searchString);
+		}
+		*/
 	}
 
 

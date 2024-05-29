@@ -26,7 +26,7 @@ public class WmInputOkCommand implements WebMessageInterface {
 		
 		if(res != 0) {
 			request.setAttribute("message", "메세지가 전송되었습니다.");
-			request.setAttribute("url", "WebMessage.wm?mSw=1");
+			request.setAttribute("url", "WebMessage.wm?mSw=3");
 		}
 		else {
 			request.setAttribute("message", "메세지가 전송실패~~");

@@ -66,7 +66,7 @@
   <p><br/></p>
   <p><a href="WebMessage.wm?mSw=0">메세지작성</a></p>
   <p><a href="WebMessage.wm?mSw=1&mFlag=11">받은메세지</a></p>
-  <p><a href="WebMessage.wm?mSw=2">새메세지</a></p>
+  <p><a href="WebMessage.wm?mSw=2&mFlag=12">새메세지</a></p>
   <p><a href="WebMessage.wm?mSw=3&mFlag=13">보낸메세지</a></p>
   <p><a href="WebMessage.wm?mSw=4">수신확인</a></p>
   <p><a href="WebMessage.wm?mSw=5&mFlag=15">휴지통</a></p>
@@ -80,26 +80,31 @@
     </c:if>
     <c:if test="${mSw == 1}">
       <h3>받은 메세지</h3>
+      <p>(전달받은 모든메세지를 보여줍니다.)</p>
     	<jsp:include page="wmList.jsp" />
     </c:if>
     <c:if test="${mSw == 2}">
       <h3>신규 메세지</h3>
+      <p>(전달받은 신규메세지만 보여줍니다.)</p>
     	<jsp:include page="wmList.jsp" />
     </c:if>
     <c:if test="${mSw == 3}">
       <h3>보낸 메세지</h3>
+      <p>(전달한 모든메세지를 보여줍니다.)</p>
     	<jsp:include page="wmList.jsp" />
     </c:if>
     <c:if test="${mSw == 4}">
       <h3>수신 확인</h3>
+      <p>(전달한 메세지중 읽지않은 메세지만 보여줍니다.)</p>
     	<jsp:include page="wmList.jsp" />
     </c:if>
     <c:if test="${mSw == 5}">
       <h3>휴지통 목록</h3>
+      <p>(휴지통에 들어있는 메세지를 보여줍니다.)</p>
     	<jsp:include page="wmList.jsp" />
     </c:if>
     <c:if test="${mSw == 6}">
-      <h3>메세지 내용보기</h3>
+      <h3>메세지 내용보기</h3><br/>
 	    <jsp:include page="wmContent.jsp" />
     </c:if>
   </p>

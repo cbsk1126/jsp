@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>main.jsp</title>
+  <title>main3.jsp</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <%@ include file = "/include/bs4.jsp" %>
@@ -66,53 +66,12 @@
     </div>
     <div class="col-sm-8">
       <h2>TITLE HEADING</h2>
-      <!-- <h6>Title description, Dec 7, 2017</h6> -->
-      <%-- <div><img src="${ctp}/images/${mainImage1}.jpg" width="100%" height="200px" style="border-radius: 1rem"/></div> --%>
-      
-			<div id="myCarousel" class="carousel slide" data-ride="carousel">
-			  <!-- Indicators -->
-			  <ul class="carousel-indicators">
-			    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			    <li data-target="#myCarousel" data-slide-to="1"></li>
-			    <li data-target="#myCarousel" data-slide-to="2"></li>
-			    <li data-target="#myCarousel" data-slide-to="3"></li>
-			    <li data-target="#myCarousel" data-slide-to="4"></li>
-			  </ul>
-			  
-			  <!-- The slideshow -->
-			  <div class="carousel-inner">
-			    <div class="carousel-item active">
-			      <img src="${ctp}/images/${mainImage1}.jpg" alt="Los Angeles" width="1100" height="400" style="border-radius: 1rem">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="${ctp}/images/${mainImage2}.jpg" alt="Chicago" width="1100" height="400" style="border-radius: 1rem">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="${ctp}/images/${mainImage3}.jpg" alt="New York" width="1100" height="400" style="border-radius: 1rem">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="${ctp}/images/${mainImage4}.jpg" alt="New York" width="1100" height="400" style="border-radius: 1rem">
-			    </div>
-			    <div class="carousel-item">
-			      <img src="${ctp}/images/${mainImage5}.jpg" alt="New York" width="1100" height="400" style="border-radius: 1rem">
-			    </div>
-			  </div>
-		  
-			  <!-- Left and right controls -->
-			  <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
-			    <span class="carousel-control-prev-icon"></span>
-			  </a>
-			  <a class="carousel-control-next" href="#myCarousel" data-slide="next">
-			    <span class="carousel-control-next-icon"></span>
-			  </a>
-			</div>
-
+      <h6>Title description, Dec 7, 2017</h6>
+      <div><img src="${ctp}/images/${mainImage}.jpg" width="100%" height="200px" style="border-radius: 1rem"/></div>
       <p>Some text..</p>
       <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-      <!-- <h3>TITLE HEADING</h3> -->
-      <!-- <h5>Title description, Sep 2, 2017</h5> -->
-      <c:set var="today" value="<%=java.time.LocalDate.now() %>"/>
-      <h5>Title description, ${today}</h5>
+      <h3>TITLE HEADING</h3>
+      <h6>Title description, Sep 2, 2017</h6>
       <!-- <div class="fakeimg">Fake Image</div> -->
         <div class="item">
           <div class="item-img">
