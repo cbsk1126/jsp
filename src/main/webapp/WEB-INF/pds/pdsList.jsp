@@ -103,7 +103,10 @@
           <a href="PdsContent.pds?idx=${vo.idx}&pag=${pag}&pageSize=${pageSize}&part=${part}">${vo.title}</a>
 	        <c:if test="${vo.hour_diff <= 24}"><img src="${ctp}/images/new.gif" /></c:if>  
         </td>
-        <td>${vo.nickName}</td>
+        <td>
+        
+          ${vo.nickName}
+        </td>
         <td>
           ${vo.date_diff == 0 ? fn:substring(vo.fDate,11,19) : fn:substring(vo.fDate,0,10)}
         </td>

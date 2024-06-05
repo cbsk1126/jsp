@@ -34,6 +34,8 @@ public class BoardContentCommand implements BoardInterface {
 			contentReadNum.add(imsiContentReadNum);
 		}
 		session.setAttribute("sContentIdx", contentReadNum);
+		
+		// 선택 게시글 1건 담아서 내용보기로 보낼준비...
 		BoardVO vo = dao.getBoardContent(idx);
 		request.setAttribute("vo", vo);
 		

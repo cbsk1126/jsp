@@ -79,6 +79,7 @@
 				      <a class="dropdown-item" href="Transaction.st">트랜잭션연습</a>
 				      <%-- <a class="dropdown-item" href="${ctp}/translator">웹 번역</a> --%>
 				      <a class="dropdown-item" href="Translator.st">웹 번역</a>
+				      <a class="dropdown-item" href="Error.st">에러페이지</a>
 				    </div>
 				  </div>
 	      </li>
@@ -92,6 +93,7 @@
 				      <c:if test="${level <= 4 && (level > 1 || level == 0)}">
 					      <a class="dropdown-item" href="Schedule.sc">일정관리</a>
 					      <a class="dropdown-item" href="WebMessage.wm">메세지관리</a>
+					      <a class="dropdown-item" href="PhotoGallery.ptg">PhotoGallery</a>
 				      	<a class="dropdown-item" href="MemberList.mem">회원리스트</a>
 				      </c:if>
 				      <a class="dropdown-item" href="MemberPwdCheck.mem">회원정보수정</a>

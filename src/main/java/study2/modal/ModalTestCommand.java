@@ -10,7 +10,7 @@ import member.MemberDAO;
 import member.MemberVO;
 import study2.StudyInterface;
 
-public class ModelTestCommand implements StudyInterface {
+public class ModalTestCommand implements StudyInterface {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -19,7 +19,7 @@ public class ModelTestCommand implements StudyInterface {
 		MemberDAO dao = new MemberDAO();
 		
 		MemberVO mVo = dao.getMemberIdCheck(mid);
-		System.out.println("mVo : " + mVo);
+		
 		request.setAttribute("mVo", mVo);
 	}
 
