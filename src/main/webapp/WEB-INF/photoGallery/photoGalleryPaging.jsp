@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
   <c:forEach var="vo" items="${vos}" varStatus="st">
-    <!-- <div class="card" style="width:25%;"> -->
     <div class="card mb-5" style="width:220px;">
 	    <div class="card-body m-0 p-2 text-center">
 	      <a href="PhotoGallerContent.ptg?idx=${vo.idx}">

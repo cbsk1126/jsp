@@ -36,28 +36,32 @@ public class PhotoGalleryDAO {
 	}
 
 	// photoGallery전체 자료 가져오기
-	public ArrayList<PhotoGalleryVO> getPhotoGalleryList(String part, String choice) {
+	public ArrayList<PhotoGalleryVO> getPhotoGalleryList(int startIndexNo, int pageSize, String part, String choice) {
 		ArrayList<PhotoGalleryVO> vos = new ArrayList<PhotoGalleryVO>();
 		try {
 			//sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName from photoGallery pg order by pg.idx desc";
 			if(part.equals("전체")) {
 				if(choice.equals("최신순")) {
-					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg order by pg.idx desc";
+					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg order by pg.idx desc limit ?,?";
 				}
 				else {
-					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg order by "+choice+" desc, pg.idx desc";
+					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg order by "+choice+" desc, pg.idx desc limit ?,?";
 				}
 				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, startIndexNo);
+				pstmt.setInt(2, pageSize);
 			}
 			else {
 				if(choice.equals("최신순")) {
-					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg where part=? order by pg.idx desc";
+					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg where part=? order by pg.idx desc limit ?,?";
 				}
 				else {
-					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg where part=? order by "+choice+" desc, pg.idx desc";
+					sql = "select pg.*,(select fSName from photoStorage where photoIdx=pg.idx limit 1) as fSName, (select count(*) from photoReply where photoIdx=pg.idx) as replyCnt from photoGallery pg where part=? order by "+choice+" desc, pg.idx desc limit ?,?";
 				}
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, part);
+				pstmt.setInt(2, startIndexNo);
+				pstmt.setInt(3, pageSize);
 			}
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -272,5 +276,61 @@ public class PhotoGalleryDAO {
 			pstmtClose();			
 		}
 		return res;
+	}
+
+	// 기존에 존재하는 사진정보 삭제하기
+	public void setPhotoSingleDelete() {
+		try {
+			// sql = "delete from photoSingle";
+			sql = "drop table photoSingle";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+			pstmtClose();
+			
+			sql = "create table photoSingle (idx int not null auto_increment primary key, photo varchar(50))";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();			
+		}
+	}
+
+	// 사진 한장씩 등록시키기
+	public void setPhotoSingleInput(String file) {
+		try {
+			sql = "insert into photoSingle values (default, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, file);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			pstmtClose();			
+		}
+	}
+
+	// 사진 20장씩 가져오기
+	public ArrayList<String[]> getPhotoGallerySingleList(int startIndexNo, int pageSize) {
+		ArrayList<String[]> vos = new ArrayList<String[]>();
+		try {
+			sql = "select * from photoSingle limit ?,?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				String[] photo = new String[2];
+				photo[0] = rs.getInt("idx") + "";
+				photo[1] = rs.getString("photo");
+				vos.add(photo);
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL 오류 : " + e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
 	}
 }

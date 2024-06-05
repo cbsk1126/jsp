@@ -35,6 +35,11 @@ public class PhotoGalleryController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/photoGalleryList.jsp";
 		}
+		else if(com.equals("/PhotoGalleryPaging")) {
+			command = new PhotoGalleryCommand();
+			command.execute(request, response);
+			viewPage += "/photoGalleryPaging.jsp";
+		}
 		else if(com.equals("/PhotoGalleryInput")) {
 			viewPage += "/photoGalleryInput.jsp";
 		}
@@ -58,6 +63,21 @@ public class PhotoGalleryController extends HttpServlet {
 			command.execute(request, response);
 			return;
 		}
+		else if(com.equals("/PhotoGallerySingle")) {
+			command = new PhotoGallerySingleCommand();
+			command.execute(request, response);
+			viewPage += "/photoGallerySingle.jsp";
+		}
+		else if(com.equals("/PhotoGallerySinglePaging")) {
+			command = new PhotoGallerySingleCommand();
+			command.execute(request, response);
+			viewPage += "/photoGallerySinglePaging.jsp";
+		}
+//		else if(com.equals("/PhotoGallerySinglePaging")) {
+//			command = new PhotoGallerySinglePagingCommand();
+//			command.execute(request, response);
+//			viewPage += "/photoGallerySinglePaging.jsp";
+//		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
 		dispatcher.forward(request, response);		

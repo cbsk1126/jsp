@@ -38,3 +38,7 @@ create table photoReply (
 );
 drop table photoReply;
 select * from photoReply;
+
+create table photoSingle (
+  photo  varchar(50) not null
+);
